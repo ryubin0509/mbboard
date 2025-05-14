@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mbboard.mapper.BoardMapper">
+
+	<select id="selectBoardListByPage" parameterType="com.example.mbboard.dto.Page"
+									resultType="com.example.mbboard.dto.Board">
+		SELECT
+			board_no boardNo
+		   ,board_title boardTitle
+		FROM board
+		<where>
+			<if test="searchWord != null and searchWord != ''">
+				board_title like CONCAT('%', #{searchWord}, '%') 
+			</if>
+		</where>							
+		ORDER BY board_no
+		LIMIT #{beginRow}, #{rowPerPage}								
+	</select>
+
+
+  <insert id="insertBoard" parameterType="com.example.mbboard.dto.Board">
+    INSERT INTO board (
+      board_title, board_content, board_user
+    ) VALUES (
+      #{boardTitle}, #{boardContent}, #{boardUser}
+    )
+  </insert>
+
+  <update id="updateBoard" parameterType="com.example.mbboard.dto.Board">
+    UPDATE board
+    <set>
+      <if test="boardTitle != null">board_title = #{boardTitle},</if>
+      <if test="boardContent != null">board_content = #{boardContent},</if>
+      <if test="boardUser != null">board_user = #{boardUser}</if>
+    </set>
+    WHERE board_no = #{boardNo}
+  </update>
+
+  <delete id="deleteBoardByKey" parameterType="int">
+    DELETE FROM board
+    WHERE board_no = #{boardNo}
+  </delete>
+
+   <select id="countBoardList" parameterType="String" resultType="int">
+   	SELECT COUNT(*)
+   	FROM board
+   	where board_title LIKE CONCAT('%',#{searchWord},'%')
+   </select>
+   
+   <select id="selectBoardOne" parameterType="int" resultType="com.example.mbboard.dto.Board"> 
+   SELECT board_no AS boardNo,
+           board_title AS boardTitle,
+           board_content AS boardContent,
+           board_user AS boardUser FROM board
+   WHERE board_no = #{boardNo}
+   </select>
+</mapper>
