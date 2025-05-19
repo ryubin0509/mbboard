@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mbboard.mapper.LoginMapper">
+	
+	
+	<update id="updateMemberPw" parameterType="com.example.mbboard.dto.Member">
+		UPDATE member
+		SET member_pw = #{rememberPw}, pwcktime = null
+		WHERE member_pw = #{memberPw}  
+		AND pwcktime is NOT NULL
+		AND TIMESTAMPDIFF(MINUTE,pwcktime,NOW()) &lt; 11
+	
+	
+	
+	</update>
+	
+	
+	
+	
+	
+	
+	<update id="updateMemberPwByAdmin" parameterType="com.example.mbboard.dto.Member" >
+		UPDATE member
+		SET member_pw = #{memberPw}, pwcktime = NOW()
+		WHERE member_Id = #{memberId} 
+		AND email = #{email}
+	</update>
+	
+	
+	<select id="login" parameterType="com.example.mbboard.dto.Member"
+					   resultType="com.example.mbboard.dto.Member">
+	SELECT 
+		member_id memberId
+	  , member_role memberRole
+	FROM member
+	WHERE member_id = #{memberId}
+	AND member_pw = #{memberPw}
+	
+	</select>
+	
+	<select id="selectNotAdminMembers" resultType="com.example.mbboard.dto.Member" parameterType="com.example.mbboard.dto.Page">
+		SELECT
+			member_id memberId
+		 ,	member_pw memberPw
+		 ,  member_role memberRole
+		 FROM member
+		 WHERE member_role != 'admin'
+		 ORDER BY member_id
+		 limit #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id="countMemberList" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE member_role != 'admin'
+	</select>
+	
+	<select id="selectMemberOne" resultType="com.example.mbboard.dto.Member" parameterType="String">
+		SELECT 
+			member_id memberId
+		,	member_pw memberPw
+		, 	member_role memberRole
+		FROM member
+		WHERE member_id = #{memberId}
+	
+	</select>
+	
+	<update id="updateMemberListOne" parameterType="com.example.mbboard.dto.Member" >
+		UPDATE member
+		<set>
+			<if test="memberPw != null">member_pw = #{memberPw},</if>
+			<if test="memberRole != null">member_role = #{memberRole},</if>	
+		</set>
+		WHERE member_id = #{memberId}
+	</update>
+	
+</mapper>

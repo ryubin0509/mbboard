@@ -39,6 +39,14 @@ $(function() {
 	</tr>
 	</c:forEach>
 
+	
+</table>
+
+<input type="text" id="searchWord" name="searchWord" value="${page.searchWord}">
+<button type="button" id ="submitbutton">검색하기</button>
+</form>
+
+<a href="/mbboardList?currentPage=1">처음</a>
 	<c:if test="${page.currentPage>1}">
 		<a href="/mbboardList?currentPage=${page.currentPage-1}&searchWord=${page.searchWord}">이전</a>
 	</c:if>
@@ -46,12 +54,6 @@ $(function() {
 	<c:if test="${page.currentPage< page.lastPage}">
 		<a href="/mbboardList?currentPage=${page.currentPage+1}&searchWord=${page.searchWord}">다음</a>
 	 </c:if>
-</table>
-
-<input type="text" id="searchWord" name="searchWord" value="${page.searchWord}">
-<button type="button" id ="submitbutton">검색하기</button>
-</form>
-
-
+	 	<a href="/mbboardList?currentPage=${page.lastPage}">마지막</a>
 </body>
 </html>

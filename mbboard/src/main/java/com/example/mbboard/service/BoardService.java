@@ -54,4 +54,5 @@ public class BoardService implements IBoardService{
 	    return boardMapper.deleteBoardByKey(boardNo);
 	}
 
+
 }
