@@ -17,4 +17,6 @@ public interface LoginMapper {
 	
 	int updateMemberPwByAdmin(Member member); // 관리자 비밀번호 변경
 	int updateMemberPw(Member member); // 임시비밀번호 발급및 비밀번호 변경 
+	int countCheckId(String memberId); // id check
+	int insertId(Member paramMember);
 }

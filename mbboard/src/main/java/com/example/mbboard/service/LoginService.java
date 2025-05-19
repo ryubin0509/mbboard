@@ -24,6 +24,31 @@ public class LoginService implements ILoginService{
 	
 	
 	@Override
+	public void insertId(Member paramMember) {
+		int row = loginMapper.insertId(paramMember);
+		if( row == 1) {
+			log.info("회원가입 성공");
+		} 
+		else { 
+			log.info("회원가입 실패");
+		}
+		
+		
+	}
+
+	
+	
+	@Override
+	public boolean countCheckId(String memberId) {
+		int row = loginMapper.countCheckId(memberId);
+		if(row != 1) {
+			 return true;
+		}else {
+			return false;
+		}
+	}
+	
+	@Override
 	public void updaterechangeMemberPw(Member member) {
 		// 새로운 패스워드 삽입 
 		int row = loginMapper.updateMemberPw(member);
@@ -90,6 +115,9 @@ public class LoginService implements ILoginService{
 	public int updateMemberListOne(Member member) {
 		return loginMapper.updateMemberListOne(member);
 	}
+
+
+
 
 
 

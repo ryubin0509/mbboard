@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mbboard.mapper.LoginMapper">
 	
+	<insert id="insertId" parameterType="com.example.mbboard.dto.Member" >
+		INSERT INTO member (member_id, member_pw, member_role) VALUES
+		(#{memberId},#{memberPw},#{memberRole});
+	
+	
+	
+	</insert>
+	
+	<select id="countCheckId" parameterType="java.lang.String" resultType="int">
+		SELECT COUNT(*)
+		FROM member
+		WHERE member_id = #{memberId};
+	
+	</select>
+	
+	
 	
 	<update id="updateMemberPw" parameterType="com.example.mbboard.dto.Member">
 		UPDATE member

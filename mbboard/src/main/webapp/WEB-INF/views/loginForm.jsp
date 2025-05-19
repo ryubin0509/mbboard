@@ -25,7 +25,7 @@
 
     <input type="hidden" name="memberRole" value="member">
 
-    <button type="submit">가입하기</button>
+    <button type="button" id="join">가입하기</button>
   </form>
   
   <script type="text/javascript">
@@ -45,46 +45,82 @@
 			  success: function(res) {
 				  if(res === true || res === 'true'){
 					  $('#idCheckResult').text('사용가능한 아이디입니다.');
+					  idChecked = true;
 				  } else{
 					  $('#idCheckResult').text('이미 사용중인 아이디입니다.');
+					  idChecked = false;
 				  }
 			  },
 			  error: function(err){
 				  alert("요청실패");
 				  console.log(err);
+				  idChecked = false;
 			  }
 		   })
 		 })
-	   
-		   $.ajax({
-			   url: "/registerForm" , //
-			   method: "POST" ,
-			   data: {}
-			   
-			   
-		   })
+	   	
+		 $('#join').click(function(){
+			if(!idChecked){
+				alert("아이디 중복을 해주세요.");
+				return;
+			}
+			if(!pwMatch){
+				alert("비밀번호가 일치하지 않습니다.");
+				return;
+			}
+			
+			const memberId = $('#memberId').val().trim();
+			const memberPw = $('#memberPw').val().trim();
+			const memberRole = $('input[name="memberRole"]').val();
+			
+			   $.ajax({
+				   url: "/registerForm" , //
+				   method: "POST" ,
+				   data: {memberId: memberId,
+					   	  memberPw: memberPw,
+					   	  memberRole: memberRole
+				   },
+				   success : function(response) {
+					   alert("가입 성공!");
+					   console.log("서버 응답:", response);
+					   window.location.href="/login";
+					   
+				   },
+				   error: function(err) {
+					   alert("가입중 오류 발생");
+					   console.error("에러 발생", err);
+				   }
+				   
+				   
+			   })
+			
+			
+		 });
 		 
-	   $('#memberPw').blur(function(){
-		   const  memberPw = $('#memberPw').val().trim();
-		   const  memberPw1 = $('#memberPwConfirm').val().trim();
+		 
+		 $('#memberId').on('input' ,function() {
+			 idChecked = false;
+			 
+		 });
+		 
+
+		 
+	   $('#memberPw,#memberPwConfirm').blur(function(){
+		   const  pw = $('#memberPw').val().trim();
+		   const  pw2 = $('#memberPwConfirm').val().trim();
 		   
-		   if(memberPw === memberPw1){
+		   if(pw !== "" && pw === pw2){
 			   $('#pwMatchResult').text('비밀번호가 일치합니다.');
+			   pwMatch = true;
 		   } else {
 			   $('#pwMatchResult').text('비밀번호가 다릅니다.');
+			   pwMatch = false;
 		   }
 	   });
 	   
-	   $('#memberPwConfirm').blur(function(){
-		   const  memberPw = $('#memberPw').val().trim();
-		   const  memberPw1 = $('#memberPwConfirm').val().trim();
-		   
-		   if(memberPw === memberPw1){
-			   $('#pwMatchResult').text('비밀번호가 일치합니다.');
-		   } else {
-			   $('#pwMatchResult').text('비밀번호가 다릅니다.');
-		   }
-	   });
+
+	   
+
 	   
   })
   

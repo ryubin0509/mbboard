@@ -41,7 +41,7 @@ public class LoginController {
 		// 메일전송
 		// 로그인 페이지로 이동
 		
-		return "rechangeMemberPw";
+		return "/rechangeMemberPw";
 		
 	}
 	
@@ -49,7 +49,7 @@ public class LoginController {
 	public String rechangeMemberPw(Member member) {
 		
 		loginService.updaterechangeMemberPw(member);
-		return "redirect:/login";
+		return "login";
 	}
 	
 	

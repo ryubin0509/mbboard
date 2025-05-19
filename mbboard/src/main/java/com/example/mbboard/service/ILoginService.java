@@ -15,9 +15,11 @@ public interface ILoginService {
 	int countMemberList();
 	Member selectMemberOne(String memberId);
 	int updateMemberListOne(Member member);
+	boolean countCheckId(String memberId); // Id 카운트 체크
 	
 	void changeMemberPwByAdmin(Member member);
 	
 	void updaterechangeMemberPw(Member member); // 비밀번호 사용자 변경
+	void  insertId(Member paramMember);
 	
 }
